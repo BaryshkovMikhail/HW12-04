@@ -33,7 +33,7 @@ HAVING
     COUNT(c.customer_id) > 300;
 ```
 
-<img src = "IMG/img1.png" width = 40%>
+<img src = "IMG/img1.png" width = 60%>
 
 ## Задание 2
 
@@ -52,7 +52,7 @@ where
 	length > (SELECT AVG(length) FROM film);
 ```
 
-<img src = "IMG/img2.png" width = 40%>
+<img src = "IMG/img2.png" width = 60%>
 
 ----
 
@@ -77,6 +77,8 @@ order by
 	COUNT(distinct rental_id) desc
 limit 1;
 ```
+
+<img src = "IMG/img3.png" width = 60%>
 
 ----
 
@@ -113,12 +115,34 @@ order by
 	COUNT(p.payment_id) desc;
 ```
 
-<img src = "IMG/img3.png" width = 40%>
+<img src = "IMG/img4.png" width = 60%>
 
----
-
-
+----
 
 ## Задание 5*
 
 Найдите фильмы, которые ни разу не брали в аренду.
+
+----
+
+## Решение 5
+
+```sql
+select
+	f.film_id as 'Id фильма',
+	f.title as 'Название фильма'
+from
+	film f
+left join 
+    inventory i on
+	f.film_id = i.film_id
+left join 
+    rental r on
+	i.inventory_id = r.inventory_id
+where
+	r.rental_id is null
+order by
+	f.title;
+```
+
+<img src = "IMG/img5.png" width = 60%>
