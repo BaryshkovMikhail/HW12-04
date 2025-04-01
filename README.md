@@ -33,7 +33,7 @@ HAVING
     COUNT(c.customer_id) > 300;
 ```
 
-<img src = "img/img1.png" width = 40%>
+<img src = "IMG/img1.png" width = 40%>
 
 ## Задание 2
 
@@ -50,7 +50,7 @@ where
 	length > (SELECT AVG(length) FROM film);
 ```
 
-<img src = "img/img2.png" width = 40%>
+<img src = "IMG/img2.png" width = 40%>
 
 
 ## Задание 3
