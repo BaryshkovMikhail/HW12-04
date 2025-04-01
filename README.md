@@ -10,6 +10,31 @@
 
 ----
 
+## Решение 1
+
+```sql
+SELECT 
+    CONCAT(s.first_name, ' ', s.last_name) AS 'ФИО сотрудника',
+    city.city AS 'Город нахождения магазина',
+    COUNT(c.customer_id) AS 'Кол-во пользователей'
+FROM 
+    store st
+JOIN 
+    staff s ON st.manager_staff_id = s.staff_id
+JOIN 
+    address a ON st.address_id = a.address_id
+JOIN 
+    city ON a.city_id = city.city_id
+JOIN 
+    customer c ON st.store_id = c.store_id
+GROUP BY 
+    st.store_id, CONCAT(s.first_name, ' ', s.last_name), city.city
+HAVING 
+    COUNT(c.customer_id) > 300;
+```
+
+<img src = "img/img1.png" width = 40%>
+
 ## Задание 2
 
 Получите количество фильмов, продолжительность которых больше средней продолжительности всех фильмов.
