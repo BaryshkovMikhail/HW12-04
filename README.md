@@ -41,6 +41,8 @@ HAVING
 
 ----
 
+## Решение 2
+
 ```sql
 select
 	COUNT(*) as 'Кол-во фильмов с продолжительностью больше средней'
@@ -52,10 +54,29 @@ where
 
 <img src = "IMG/img2.png" width = 40%>
 
+----
 
 ## Задание 3
 
 Получите информацию, за какой месяц была получена наибольшая сумма платежей, и добавьте информацию по количеству аренд за этот месяц.
+
+----
+
+## Решение 3
+
+```sql
+select
+	DATE_FORMAT(payment_date, '%Y-%m') as 'Платежный месяц',
+	SUM(amount) as 'наибольшая сумма платежей',
+	COUNT(distinct rental_id) as 'количеству аренд за этот месяц'
+from
+	payment
+group by
+	DATE_FORMAT(payment_date, '%Y-%m')
+order by
+	COUNT(distinct rental_id) desc
+limit 1;
+```
 
 ----
 
@@ -66,6 +87,37 @@ where
 ## Задание 4*
 
 Посчитайте количество продаж, выполненных каждым продавцом. Добавьте вычисляемую колонку «Премия». Если количество продаж превышает 8000, то значение в колонке будет «Да», иначе должно быть значение «Нет».
+
+----
+
+## Решение 4
+
+```sql
+select
+	s.staff_id as 'id персонала',
+	CONCAT(s.first_name, ' ', s.last_name) as 'ФИО персонала',
+	COUNT(p.payment_id) as 'Кол-во продаж',
+	case
+		when COUNT(p.payment_id) > 8000 then 'Да'
+		else 'Нет'
+	end as Премия
+from
+	staff s
+join 
+    payment p on
+	s.staff_id = p.staff_id
+group by
+	s.staff_id,
+	CONCAT(s.first_name, ' ', s.last_name)
+order by
+	COUNT(p.payment_id) desc;
+```
+
+<img src = "IMG/img3.png" width = 40%>
+
+---
+
+
 
 ## Задание 5*
 
