@@ -33,7 +33,7 @@ HAVING
     COUNT(c.customer_id) > 300;
 ```
 
-<img src = "IMG/img1.png" width = 60%>
+![img](img/img1.png)
 
 ## Задание 2
 
@@ -45,14 +45,14 @@ HAVING
 
 ```sql
 select
-	COUNT(*) as 'Кол-во фильмов с продолжительностью больше средней'
+ COUNT(*) as 'Кол-во фильмов с продолжительностью больше средней'
 from
-	film
+ film
 where
-	length > (SELECT AVG(length) FROM film);
+ length > (SELECT AVG(length) FROM film);
 ```
 
-<img src = "IMG/img2.png" width = 60%>
+![img](img/img2.png)
 
 ----
 
@@ -66,19 +66,19 @@ where
 
 ```sql
 select
-	DATE_FORMAT(payment_date, '%Y-%m') as 'Платежный месяц',
-	SUM(amount) as 'наибольшая сумма платежей',
-	COUNT(distinct rental_id) as 'количеству аренд за этот месяц'
+ DATE_FORMAT(payment_date, '%Y-%m') as 'Платежный месяц',
+ SUM(amount) as 'наибольшая сумма платежей',
+ COUNT(distinct rental_id) as 'количеству аренд за этот месяц'
 from
-	payment
+ payment
 group by
-	DATE_FORMAT(payment_date, '%Y-%m')
+ DATE_FORMAT(payment_date, '%Y-%m')
 order by
-	COUNT(distinct rental_id) desc
+ COUNT(distinct rental_id) desc
 limit 1;
 ```
 
-<img src = "IMG/img3.png" width = 60%>
+![img](img/img3.png)
 
 ----
 
@@ -96,26 +96,26 @@ limit 1;
 
 ```sql
 select
-	s.staff_id as 'id персонала',
-	CONCAT(s.first_name, ' ', s.last_name) as 'ФИО персонала',
-	COUNT(p.payment_id) as 'Кол-во продаж',
-	case
-		when COUNT(p.payment_id) > 8000 then 'Да'
-		else 'Нет'
-	end as Премия
+ s.staff_id as 'id персонала',
+ CONCAT(s.first_name, ' ', s.last_name) as 'ФИО персонала',
+ COUNT(p.payment_id) as 'Кол-во продаж',
+ case
+  when COUNT(p.payment_id) > 8000 then 'Да'
+  else 'Нет'
+ end as Премия
 from
-	staff s
+ staff s
 join 
     payment p on
-	s.staff_id = p.staff_id
+ s.staff_id = p.staff_id
 group by
-	s.staff_id,
-	CONCAT(s.first_name, ' ', s.last_name)
+ s.staff_id,
+ CONCAT(s.first_name, ' ', s.last_name)
 order by
-	COUNT(p.payment_id) desc;
+ COUNT(p.payment_id) desc;
 ```
 
-<img src = "IMG/img4.png" width = 60%>
+![img](img/img4.png)
 
 ----
 
@@ -129,20 +129,33 @@ order by
 
 ```sql
 select
-	f.film_id as 'Id фильма',
-	f.title as 'Название фильма'
+ f.film_id as 'Id фильма',
+ f.title as 'Название фильма'
 from
-	film f
+ film f
 left join 
     inventory i on
-	f.film_id = i.film_id
+ f.film_id = i.film_id
 left join 
     rental r on
-	i.inventory_id = r.inventory_id
+ i.inventory_id = r.inventory_id
 where
-	r.rental_id is null
+ r.rental_id is null
 order by
-	f.title;
+ f.title;
 ```
 
-<img src = "IMG/img5.png" width = 60%>
+![img](img/img5.png)
+
+## ESCAPE-символ
+
+**ESCAPE-символ** используется для экранирования специальных символов (% и \). В случае если вам нужно найти строки, вы можете использовать ESCAPE-символ.
+
+Например, вы хотите получить идентификаторы задач, прогресс которых равен 3%:
+
+```sql
+SELECT job_id FROM Jobs
+WHERE progress LIKE '3!%' ESCAPE '!';
+```
+
+Если бы мы не экранировали трафаретный символ, то в выборку попало бы всё, что начинается на 3.
